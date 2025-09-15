@@ -1,12 +1,16 @@
-import { Router } from "express";
+import express from "express";
 import { UserController } from "./user.controller";
 
-const router = Router();
+const router = express.Router();
 
 router.get("/", UserController.getAllFromDB);
 
+router.get("/:id", UserController.getUserById);
+
 router.post("/", UserController.createUser);
 
-router.get("/:id", UserController.getSingleUser);
+router.patch("/:id", UserController.updateUser);
 
-export const UserRouter = router;
+router.delete("/:id", UserController.deleteUser);
+
+export const userRouter = router;

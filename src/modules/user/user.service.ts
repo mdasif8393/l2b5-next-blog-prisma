@@ -1,8 +1,8 @@
-import { Prisma, User } from "@prisma/client";
 import { prisma } from "../../config/db";
+import { Prisma, User } from "@prisma/client";
 
-const createUSer = async (payload: Prisma.UserCreateInput): Promise<User> => {
-  const createdUser = prisma.user.create({
+const createUser = async (payload: Prisma.UserCreateInput): Promise<User> => {
+  const createdUser = await prisma.user.create({
     data: payload,
   });
   return createdUser;
@@ -22,18 +22,14 @@ const getAllFromDB = async () => {
       status: true,
       posts: true,
     },
-    // include: {
-    //   posts: true,
-    // },
     orderBy: {
       createdAt: "desc",
     },
   });
-
   return result;
 };
 
-const getSingleUser = async (id: number) => {
+const getUserById = async (id: number) => {
   const result = await prisma.user.findUnique({
     where: {
       id,
@@ -42,11 +38,11 @@ const getSingleUser = async (id: number) => {
       id: true,
       name: true,
       email: true,
+      role: true,
       phone: true,
       picture: true,
       createdAt: true,
       updatedAt: true,
-      role: true,
       status: true,
       posts: true,
     },
@@ -54,8 +50,29 @@ const getSingleUser = async (id: number) => {
   return result;
 };
 
+const updateUser = async (id: number, payload: Partial<User>) => {
+  const result = await prisma.user.update({
+    where: {
+      id,
+    },
+    data: payload,
+  });
+  return result;
+};
+
+const deleteUser = async (id: number) => {
+  const result = await prisma.user.delete({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
+
 export const UserService = {
-  createUSer,
+  createUser,
   getAllFromDB,
-  getSingleUser,
+  getUserById,
+  updateUser,
+  deleteUser,
 };

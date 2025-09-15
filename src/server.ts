@@ -10,16 +10,16 @@ let server: Server | null = null;
 async function connectToDB() {
   try {
     await prisma.$connect();
-    console.log("*** DB is Connected Successfully. ***");
+    console.log("*** DB connection successfull!!");
   } catch (error) {
-    console.log("*** DB Connection Failed. ***");
+    console.log("*** DB connection failed!");
     process.exit(1);
   }
 }
 
 async function startServer() {
   try {
-    connectToDB();
+    await connectToDB();
     server = http.createServer(app);
     server.listen(process.env.PORT, () => {
       console.log(`🚀 Server is running on port ${process.env.PORT}`);
