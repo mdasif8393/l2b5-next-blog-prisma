@@ -11,8 +11,10 @@ const createPost = async (req: Request, res: Response) => {
 };
 
 const getAllPosts = async (req: Request, res: Response) => {
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 1;
   try {
-    const result = await PostService.getAllPosts();
+    const result = await PostService.getAllPosts({ page, limit });
     res.json(result);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch posts", details: err });
