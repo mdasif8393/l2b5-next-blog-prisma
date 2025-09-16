@@ -25,8 +25,12 @@ const getAllPosts = async ({
   page: number;
   limit: number;
 }) => {
-  console.log({ page, limit });
-  const result = await prisma.post.findMany();
+  const skip = (page - 1) * limit;
+
+  const result = await prisma.post.findMany({
+    skip,
+    take: limit,
+  });
   return result;
 };
 
